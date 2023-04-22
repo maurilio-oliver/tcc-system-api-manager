@@ -1,0 +1,14 @@
+version: '3'
+services:
+  database:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    image: postgres
+    environment:
+      - POSTGRE_USER=value
+      - POSTGRE_DATABASE=test
+      - POSTGRES_PASSWORD=test
+    ports:
+      - "8080"
+    container_name: tcc_docker_services
