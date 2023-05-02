@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 @RequestMapping("test")
 @RestController
 @Service
+// todo: remove test code
 public class Test {
     @Autowired
     JmsTemplate jmsTemplate;
