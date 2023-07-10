@@ -1,24 +1,29 @@
 package br.unip.tcc.tccapi.model;
 
-import br.unip.tcc.tccapi.view.GenericJsonConverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-public enum ProductState {
+public enum RequestState {
+    REQUESTED,
+    ACCEPTED,
+    PAYMENT_PROCESS,
+    CONFIRMED,
+    IN_PREPARATION,
+    SENDED,
+    RECEIVED
 
-    ACTIVE,
-    DISABLED;
+    ;
 
     @Converter
     public static class
-    Convert implements AttributeConverter<ProductState, String> {
+    Convert implements AttributeConverter<RequestState, String> {
 
         private final ObjectMapper objectMapper = new ObjectMapper();
 
         @Override
-        public String convertToDatabaseColumn(ProductState state) {
+        public String convertToDatabaseColumn(RequestState state) {
             try {
                 return objectMapper.writeValueAsString(state);
             } catch (JsonProcessingException e) {
@@ -29,9 +34,9 @@ public enum ProductState {
         }
 
         @Override
-        public ProductState convertToEntityAttribute(String json) {
+        public RequestState convertToEntityAttribute(String json) {
             try {
-                return objectMapper.readValue(json, ProductState.class);
+                return objectMapper.readValue(json, RequestState.class);
             } catch (JsonProcessingException e) {
                 // Tratar a exceção adequadamente
                 e.printStackTrace();
@@ -39,6 +44,4 @@ public enum ProductState {
             }
         }
     }
-
-
 }

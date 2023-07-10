@@ -2,12 +2,12 @@ version: '3'
 services:
   database:
     image: postgres
+    restart: always
     environment:
-      - POSTGRE_USER=value
-      - POSTGRE_DATABASE=test
-      - POSTGRES_PASSWORD=test
+        POSTGRES_USER: developer
+        POSTGRES_PASSWORD: developer
     ports:
-      - "8080"
+      - "8180:5432"
     container_name: tcc_docker_services
 
   activemq:
