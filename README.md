@@ -27,6 +27,7 @@ para installar o [maven](https://maven.apache.org/guides/getting-started/windows
 
 para installar o [java](https://www.java.com/download/ie_manual.jsp) no windowns 
 
+para installar o [docker](https://docs.docker.com/desktop/install/windows-install/)
 
 # Rodando o programa
 
