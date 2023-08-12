@@ -10,9 +10,8 @@ public class Member {
     @Id
     @GeneratedValue
     private Long id;
-
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     /** @see GenericJsonConverter **/
     @Column(columnDefinition = "jsonb")
@@ -24,13 +23,8 @@ public class Member {
     @Convert(converter = Personal.class)
     private Financial financial;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
+
 
 
 }

@@ -16,20 +16,14 @@ public class Product extends GenericJsonConverter<Product> {
     private Long id;
     private BigDecimal price;
     private String name;
-    private String content;
+    private String description;
+    private String imagePath;
     private BigDecimal quality;
-
+    @Convert(converter = CategoryAllocation.class)
+    private CategoryAllocation category;
     @Column(columnDefinition = "jsonb")
     @Convert(converter=ProductState.Convert.class)
     private ProductState productState;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void process(){}
 }
