@@ -1,5 +1,5 @@
 package br.unip.tcc.tccapi.service;
 
-public class CommunMemberService {
+public class OrderSerivce {
 
 }
