@@ -1,20 +1,43 @@
 package br.unip.tcc.tccapi.controller;
 
 import br.unip.tcc.tccapi.model.Member;
-import br.unip.tcc.tccapi.repository.MemberRepository;
-import jakarta.persistence.GeneratedValue;
+import br.unip.tcc.tccapi.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Controller
+@RequestMapping("/member/seller")
 public class SellerController {
     @Autowired
-    private MemberRepository memberRepository;
+    private SellerService sellerService;
 
-    @Autowired
-    private MemberController memberController;
+    @PostMapping("/create-seller")
+    public ResponseEntity createNewSeller(@RequestBody Member seller) {
+        return ResponseEntity.ok(this.sellerService.save(seller));
+    }
+
+    @GetMapping("/find-by-id/{sellerId}")
+    public Member findById(@PathVariable long sellerId) {
+        return sellerService.findById(sellerId, true);
+    }
+
+    @GetMapping("find-by-term")
+    public ResponseEntity findByTerm (
+            @RequestParam(required = false) String taxId,
+            @RequestParam(required = false) String cellPhone,
+            @RequestParam(required = false) String email
+    ) {
+
+        if (Objects.nonNull(taxId) || Objects.nonNull(email))
+            return ResponseEntity.ok(this.sellerService.findByTerm(taxId, email));
+        else
+            return ResponseEntity.ok("error !");
+    }
+
 
 
 

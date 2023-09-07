@@ -1,39 +1,26 @@
 package br.unip.tcc.tccapi.service;
 
-import br.unip.tcc.tccapi.controller.MemberController;
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-@RestController
-@RequestMapping("/member/*")
+@Service
 public class MemberService {
-
     @Autowired
-    private MemberController memberController;
+    private MemberRepository memberRepository;
 
-    @GetMapping("test/get/{memberId}")
-    public Member getById(@PathVariable final Long memberId) {
-        if (!Objects.isNull(memberId))
-            return this.memberController.findMemberById(memberId);
-        else return null;
+    public Member save(Member member) {
+        member.setUpdatedAt(LocalDateTime.now());
+        Objects.nonNull(member.getCreatedAt());
+        this.memberRepository.save(member);
+        return member;
     }
 
-    @GetMapping("/*/save")
-    public Member createNewUser(@RequestBody final Member member) {
-        return this.memberController.save(member);
+    public Member findById(Long memberId) {
+        return this.memberRepository.findById(memberId).orElse(new Member());
     }
-
-
-
-
-
-
-
-
-
-
 }

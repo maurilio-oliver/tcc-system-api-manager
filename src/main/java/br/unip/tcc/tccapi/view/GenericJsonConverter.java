@@ -2,6 +2,8 @@ package br.unip.tcc.tccapi.view;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -13,6 +15,7 @@ import java.lang.reflect.Type;
  * @param <T> in with T is an entity with persistence in table column
  *
  */
+@Converter
 public abstract class GenericJsonConverter<T> implements AttributeConverter<T, String> {
 
 
@@ -25,6 +28,7 @@ public abstract class GenericJsonConverter<T> implements AttributeConverter<T, S
      * configation initialize
      */
     @SuppressWarnings("unchecked")
+
     public GenericJsonConverter() {
         Type[] typeArguments = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
         this.type = typeArguments[0];

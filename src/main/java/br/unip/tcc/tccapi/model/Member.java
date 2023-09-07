@@ -2,9 +2,17 @@ package br.unip.tcc.tccapi.model;
 
 import br.unip.tcc.tccapi.view.GenericJsonConverter;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CollectionType;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 public class Member {
     @Id
@@ -13,18 +21,14 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    /** @see GenericJsonConverter **/
-    @Column(columnDefinition = "jsonb")
-    @Convert(converter = Personal.class)
+    @Embedded
     private Personal personal;
 
-    /** @see GenericJsonConverter **/
-    @Column(columnDefinition = "jsonb")
-    @Convert(converter = Personal.class)
+    @Embedded
     private Financial financial;
 
-
-
+    @Embedded
+    private Seller seller;
 
 
 }
