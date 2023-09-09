@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+
+@RestController
 @RequestMapping("/product")
 public class ProductController {
 
@@ -23,12 +25,12 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @GetMapping
+    @GetMapping("1")
     public ResponseEntity createNewProduct(Product product) {
         return ResponseEntity.ok(this.productService.createNewProduct(product));
     }
 
-    @GetMapping
+    @GetMapping("2")
     public ResponseEntity deleteProductById(final Long productId) {
         this.productService.deleteProductById(productId);
         return ResponseEntity.ok("ok");

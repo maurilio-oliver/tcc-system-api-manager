@@ -5,11 +5,13 @@ import br.unip.tcc.tccapi.model.Personal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class SellerServiceTests {
     @Autowired
     private SellerService sellerService;

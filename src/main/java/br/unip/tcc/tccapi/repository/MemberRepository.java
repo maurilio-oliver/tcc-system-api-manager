@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @EnableJpaRepositories
-
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    @Query("SELECT Member from Member where Member.id = :sellerId and Member.seller.initializedAt is not null ")
-    public Member findSellerById(@Param("sellerId") Long sellerId);
+//    @Query("SELECT Member from Member where Member.id = :sellerId and Member.seller.initializedAt is not null ")
+//    public Member findSellerById(@Param("sellerId") Long sellerId);
+
+    public Member findByPersonal_EmailOrPersonal_MobilePhone(String personal_email, String personal_mobilePhone);
 }

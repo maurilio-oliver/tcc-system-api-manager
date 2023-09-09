@@ -16,7 +16,7 @@ public class ProductService {
 
 
     public Product findProductBySellerId(final Long sellerId){
-        return this.productRepository.findProductBySellerId(sellerId).orElse(new Product());
+        return null; //this.productRepository.findProductBySellerId(sellerId).orElse(new Product());
     }
     public Product findProductById(final Long productId){
         return this.productRepository.findById(productId).orElse(new Product());

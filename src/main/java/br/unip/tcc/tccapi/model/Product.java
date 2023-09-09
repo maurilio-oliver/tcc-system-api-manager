@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
+@Entity
 public class Product extends GenericJsonConverter<Product> {
 
+    @Id
     private Long id;
     private Long sellerId;
     private LocalDateTime createdAt;

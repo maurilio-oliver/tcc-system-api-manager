@@ -2,6 +2,7 @@ package br.unip.tcc.tccapi.model;
 
 import br.unip.tcc.tccapi.view.GenericJsonConverter;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CollectionType;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 public class Member {
     @Id

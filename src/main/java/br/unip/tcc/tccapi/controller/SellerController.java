@@ -15,6 +15,12 @@ public class SellerController {
     @Autowired
     private SellerService sellerService;
 
+    /**
+     * <h1>Create new seller</h1>
+     * <p>Creates the end-point responsible for accessing the new seller creation service.</p>
+     * @param seller Member
+     * @return Request response
+     */
     @PostMapping("/create-seller")
     public ResponseEntity createNewSeller(@RequestBody Member seller) {
         return ResponseEntity.ok(this.sellerService.save(seller));
