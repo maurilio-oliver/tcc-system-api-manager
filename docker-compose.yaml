@@ -19,3 +19,13 @@ services:
     ports:
       - "8161:8161"
       - "61616:61616"
+  grafana:
+    image: grafana/grafana:9.3.6
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+volumes:
+  grafana-data:

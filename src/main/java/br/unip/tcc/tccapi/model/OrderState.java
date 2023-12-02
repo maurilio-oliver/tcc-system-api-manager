@@ -1,47 +1,24 @@
 package br.unip.tcc.tccapi.model;
 
+import br.unip.tcc.tccapi.view.GenericJsonConverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 public enum OrderState {
-    REQUESTED,
-    ACCEPTED,
+    ERROR,
+    CONFIRMATION_PENDING,
     PAYMENT_PROCESS,
-    CONFIRMED,
     IN_PREPARATION,
     SENDED,
-    RECEIVED
+    DELIVERED,
+    DELIVERD_CONFIRMED
 
     ;
 
     @Converter
-    public static class
-    Convert implements AttributeConverter<OrderState, String> {
+    public static class Convert extends GenericJsonConverter<OrderState> {
 
-        private final ObjectMapper objectMapper = new ObjectMapper();
-
-        @Override
-        public String convertToDatabaseColumn(OrderState state) {
-            try {
-                return objectMapper.writeValueAsString(state);
-            } catch (JsonProcessingException e) {
-                // Tratar a exceção adequadamente
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        public OrderState convertToEntityAttribute(String json) {
-            try {
-                return objectMapper.readValue(json, OrderState.class);
-            } catch (JsonProcessingException e) {
-                // Tratar a exceção adequadamente
-                e.printStackTrace();
-                return null;
-            }
-        }
     }
 }

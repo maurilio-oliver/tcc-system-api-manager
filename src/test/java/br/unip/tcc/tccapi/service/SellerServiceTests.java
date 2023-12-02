@@ -1,7 +1,10 @@
 package br.unip.tcc.tccapi.service;
 
+import br.unip.tcc.tccapi.model.Financial;
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Personal;
+import br.unip.tcc.tccapi.model.Seller;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,12 +12,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @SpringBootTest
 @ActiveProfiles("test")
 public class SellerServiceTests {
     @Autowired
     private SellerService sellerService;
+
+    @Autowired
+    private MemberService memberService;
 
 
     @Test
@@ -33,4 +41,27 @@ public class SellerServiceTests {
         Assert.isTrue(check, "id não pode ser nullo");
 
     }
+
+    @Test
+    public void saveWithResistrationStartedTest() {
+        Member member = new Member();
+
+        Personal personal = new Personal();
+        personal.setName("seller test");
+        personal.setTaxId("23605382096");
+        personal.setEmail("seller.test@gmail.com");
+        personal.setMobilePhone("11940028922");
+
+        member.setPersonal(personal);
+
+        member = this.memberService.save(member);
+
+        Assertions.assertNull(member.getSeller());
+
+        Member seller  = this.sellerService.save(member);
+
+        Assertions.assertNotNull(seller.getSeller());
+        Assertions.assertNotNull(seller.getSeller().getInitializedAt());
+    }
+
 }

@@ -7,12 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Repository
-@EnableJpaRepositories
 public interface MemberRepository extends JpaRepository<Member, Long> {
-//    @Query("SELECT Member from Member where Member.id = :sellerId and Member.seller.initializedAt is not null ")
-//    public Member findSellerById(@Param("sellerId") Long sellerId);
 
-    public Member findByPersonal_EmailOrPersonal_MobilePhone(String personal_email, String personal_mobilePhone);
+
+    @Query(value = "select * from Member u where cast(u.personal as JSONB) ->> 'email'  = ?1 or cast(u.personal as JSONB) ->> 'taxId' = ?2 or cast(u.personal as JSONB) ->> 'phoneNumber' =  ?3 limit 1", nativeQuery = true)
+    Member findByTerms(String email, String taxId, String phoneNumber);
+
+    @Query(value = "select * from Member u where u.email = ?1", nativeQuery = true)
+    Member findByEmail(String email);
+
+
 }

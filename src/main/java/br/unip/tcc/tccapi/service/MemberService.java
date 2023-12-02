@@ -13,10 +13,15 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public Member save(Member member) {
-        member.setUpdatedAt(LocalDateTime.now());
-        member.setCreatedAt(Objects.nonNull(member.getCreatedAt()) ? member.getCreatedAt() : LocalDateTime.now());
-        this.memberRepository.save(member);
+    public Member save(final Member member) {
+        if (Objects.nonNull(member.getPersonal()) &&
+                (Objects.nonNull(member.getPersonal().getEmail())
+                        && Objects.nonNull(member.getPersonal().getTaxId())
+                        && Objects.nonNull(member.getPersonal().getMobilePhone()))) {
+            member.setUpdatedAt(LocalDateTime.now());
+            member.setCreatedAt(Objects.nonNull(member.getCreatedAt()) ? member.getCreatedAt() : LocalDateTime.now());
+           return this.memberRepository.save(member);
+        }
         return member;
     }
 
@@ -24,8 +29,8 @@ public class MemberService {
         return this.memberRepository.findById(memberId).orElse(new Member());
     }
 
-    public Member findByEmailOrMobilePhone(final String email, final String mobilePhone) {
-        return this.memberRepository.findByPersonal_EmailOrPersonal_MobilePhone(email, mobilePhone);
+    public Member findByEmailOrMobilePhone(final String email, final String mobilePhone, final String taxId) {
+        return this.memberRepository.findByTerms(email, mobilePhone, taxId);
     }
 
     public Member updateMember(Member member){

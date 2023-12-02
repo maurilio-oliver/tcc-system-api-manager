@@ -1,17 +1,26 @@
 package br.unip.tcc.tccapi.controller;
 
 import br.unip.tcc.tccapi.model.Member;
+import br.unip.tcc.tccapi.model.Seller;
 import br.unip.tcc.tccapi.service.SellerService;
+import lombok.CustomLog;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactoryFriend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/member/seller")
+
 public class SellerController {
+
     @Autowired
     private SellerService sellerService;
 
@@ -22,12 +31,14 @@ public class SellerController {
      * @return Request response
      */
     @PostMapping("/create-seller")
-    public ResponseEntity createNewSeller(@RequestBody Member seller) {
-        return ResponseEntity.ok(this.sellerService.save(seller));
+    public ResponseEntity<Member> createNewSeller(@RequestBody Member seller) {
+
+      return ResponseEntity.ok(this.sellerService.save(seller));
     }
 
+
     @GetMapping("/find-by-id/{sellerId}")
-    public Member findById(@PathVariable long sellerId) {
+    public Member findById(@PathVariable Long sellerId) {
         return sellerService.findById(sellerId, true);
     }
 
@@ -39,9 +50,16 @@ public class SellerController {
     ) {
 
         if (Objects.nonNull(taxId) || Objects.nonNull(email))
-            return ResponseEntity.ok(this.sellerService.findByTerm(taxId, email));
+            return ResponseEntity.ok(this.sellerService.findByTerm(taxId, email, cellPhone));
         else
             return ResponseEntity.ok("error !");
+    }
+
+
+    @PutMapping
+    public ResponseEntity<String> updateSellerinformations(@RequestBody final Member seller){
+        this.sellerService.save(seller);
+        return ResponseEntity.ok("ok");
     }
 
 

@@ -3,7 +3,7 @@ package br.unip.tcc.tccapi.model;
 public enum RePaymentState {
     PENDING(),
     CONFIRMATION_PENDING(),
-    CONFIRMED(),
+    CANCELED(),
     RE_PAID();
 
 

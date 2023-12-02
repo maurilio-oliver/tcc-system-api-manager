@@ -1,46 +1,27 @@
 package br.unip.tcc.tccapi.model;
 
-import br.unip.tcc.tccapi.view.GenericJsonConverter;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
-@Embeddable
-public enum ProductState {
+import java.time.LocalDateTime;
 
-    ACTIVE,
-    DISABLED;
+@Getter
 
-    @Converter
-    public static class
-    Convert implements AttributeConverter<ProductState, String> {
+public enum ProductState  {
+    SET_UP(0L, LocalDateTime.now()),
+    ACTIVE(1L,LocalDateTime.now()),
+    PAUSED(2L,LocalDateTime.now()),
+    DISABLED(3L,LocalDateTime.now()),
+    DELETED(4L,LocalDateTime.now());
 
-        private final ObjectMapper objectMapper = new ObjectMapper();
-
-        @Override
-        public String convertToDatabaseColumn(ProductState state) {
-            try {
-                return objectMapper.writeValueAsString(state);
-            } catch (JsonProcessingException e) {
-                // Tratar a exceção adequadamente
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        public ProductState convertToEntityAttribute(String json) {
-            try {
-                return objectMapper.readValue(json, ProductState.class);
-            } catch (JsonProcessingException e) {
-                // Tratar a exceção adequadamente
-                e.printStackTrace();
-                return null;
-            }
-        }
+    ProductState(Long id, LocalDateTime now) {
+        this.id = id;
+        this.now = now;
     }
+
+    private Long id;
+    private LocalDateTime now;
 
 
 }

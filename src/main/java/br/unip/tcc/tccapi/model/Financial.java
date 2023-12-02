@@ -9,11 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-@Embeddable
 public class Financial extends GenericJsonConverter<Financial> {
     private String bankCode;
     private String bankNumber;
     private String digit;
-    private String banckKind;
-    private String cardNumber;
+    private String bankKind;
+
+    @Override
+    public String getTypeName(){
+        return Financial.class.getTypeName();
+    }
 }

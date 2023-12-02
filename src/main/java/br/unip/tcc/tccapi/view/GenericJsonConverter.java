@@ -1,70 +1,73 @@
 package br.unip.tcc.tccapi.view;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.jayway.jsonpath.internal.filter.ValueNodes;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import org.hibernate.dialect.PostgreSQLJsonbJdbcType;
+import org.springframework.jdbc.core.SqlTypeValue;
 
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
 
-
-/**
- * @apiNote this view was created to assist in converting complex data into database
- * entities and vice versa
- * @param <T> in with T is an entity with persistence in table column
- *
- */
 @Converter
-public abstract class GenericJsonConverter<T> implements AttributeConverter<T, String> {
-
-
+public class GenericJsonConverter<T> extends GenericJsonConverterHelp implements AttributeConverter<T, String> {
+private Logger log = Logger.getLogger(GenericJsonConverter.class.getName());
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final Type type;
 
-
-    /**
-     *
-     * configation initialize
-     */
-    @SuppressWarnings("unchecked")
-
-    public GenericJsonConverter() {
-        Type[] typeArguments = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments();
-        this.type = typeArguments[0];
-    }
-
-    /**
-     *
-     * @param entityAttribute in which you want to convert to a database table
-     * @return converted json entity
-     * @throws JsonProcessingException case not can convert in json and return null
-     */
     @Override
-    public String convertToDatabaseColumn(T entityAttribute) {
+    public String convertToDatabaseColumn(T attribute) {
         try {
-            return objectMapper.writeValueAsString(entityAttribute);
-        } catch (JsonProcessingException e) {
-            // Tratar a exceção adequadamente
-            e.printStackTrace();
-            return null;
+           ObjectMapper mapper = objectMapper.findAndRegisterModules();
+            mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+             if (attribute == null){
+                 return null;
+             } else {
+
+
+                 return mapper.writeValueAsString(attribute); //mapper.writeValueAsString(attribute);
+             }
+
+        } catch (Exception e) {
+            // Trate exceções adequadamente
+            throw new RuntimeException("Error converting to JSONB", e);
         }
     }
 
-    /**
-     *
-     * @param json string in which we will convert to entity
-     * @return entity converted
-     * @throws IOException if the json was not successfully mapped or is divergent from the entity
-     */
     @Override
-    public T convertToEntityAttribute(String json) {
+    public T convertToEntityAttribute(String dbData) {
         try {
-            return objectMapper.readValue(json, objectMapper.constructType(type));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            if(Objects.equals(dbData, null)) {
+                return null;
+
+
+            } else {
+                JsonNode a = objectMapper.readTree(dbData);
+                ObjectMapper objectMapper2 = objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                HashMap mapper = objectMapper2.readValue(dbData, HashMap.class);
+                return (T) objectMapper.readValue(dbData, (Class.forName((String) mapper.get("typeName"))).newInstance().getClass());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            // Trate exceções adequadamente
+            throw new RuntimeException("Error converting to entity", e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
+
+
+
+
+
 
 }

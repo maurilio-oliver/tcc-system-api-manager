@@ -74,8 +74,8 @@ public class SellerService {
      * @param email String email with member
      * @return Member
      */
-    public Member findByTerm(String taxId, String email) {
-        return null;
+    public Member findByTerm(String email, String taxId, String mobilePhone) {
+        return this.memberRepository.findByTerms(email, taxId, mobilePhone);
     }
 
 
