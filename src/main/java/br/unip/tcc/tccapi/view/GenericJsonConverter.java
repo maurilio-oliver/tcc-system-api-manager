@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jayway.jsonpath.internal.filter.ValueNodes;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
@@ -23,11 +24,18 @@ public class GenericJsonConverter<T> extends GenericJsonConverterHelp implements
 private Logger log = Logger.getLogger(GenericJsonConverter.class.getName());
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    public void config() {
+
+        this.objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, true);
+        this.objectMapper.registerModule(new JavaTimeModule());
+    }
+
     @Override
     public String convertToDatabaseColumn(T attribute) {
         try {
            ObjectMapper mapper = objectMapper.findAndRegisterModules();
-            mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+            this.config();
              if (attribute == null){
                  return null;
              } else {
@@ -44,6 +52,7 @@ private Logger log = Logger.getLogger(GenericJsonConverter.class.getName());
 
     @Override
     public T convertToEntityAttribute(String dbData) {
+        this.config();
         try {
             if(Objects.equals(dbData, null)) {
                 return null;

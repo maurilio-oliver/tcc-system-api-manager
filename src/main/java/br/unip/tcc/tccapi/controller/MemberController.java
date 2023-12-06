@@ -1,6 +1,7 @@
 package br.unip.tcc.tccapi.controller;
 
 import br.unip.tcc.tccapi.model.*;
+import br.unip.tcc.tccapi.model.bussines.BussinesException;
 import br.unip.tcc.tccapi.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -21,7 +22,8 @@ public class MemberController {
 
     // create a new member common
     @PostMapping("/create-new")
-    public ResponseEntity<String> createNewMember(@RequestBody Member member) {
+    public ResponseEntity<String> createNewMember(@RequestBody Member member) throws Exception {
+
             this.memberService.save(member);
             return ResponseEntity.ok("{ok}");
     }
@@ -35,13 +37,13 @@ public class MemberController {
 
     // update member information
     @PostMapping("/{memberId}/update")
-    public void update(@RequestBody final Member member, @PathVariable Long memberId) {
+    public void update(@RequestBody final Member member, @PathVariable Long memberId) throws BussinesException {
         this.memberService.save(member);
     }
 
     // delete by id
     @DeleteMapping("/{memberId}/delete-temporary/")
-    public void deleteById(@PathVariable final Long memberId) {
+    public void deleteById(@PathVariable final Long memberId) throws BussinesException {
         Member member = this.memberService.findById(memberId);
         member.setDeletedAt(LocalDateTime.now());
         this.memberService.save(member);
@@ -54,6 +56,7 @@ public class MemberController {
 
     @GetMapping("/test/message")
     public ResponseEntity getTest() {
+
         Member m = new Member();
         m.setFinancial(new Financial());
         m.setPersonal(new Personal());

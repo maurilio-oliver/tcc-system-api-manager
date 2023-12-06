@@ -45,6 +45,11 @@ public class Member /*implements UserDetails*/ {
 
     @Column(columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
+    @Convert(converter = Financial.class)
+    private Residential residential;
+
+    @Column(columnDefinition = "jsonb")
+    @ColumnTransformer(write = "?::jsonb")
     @Convert(converter = Seller.class)
     private Seller seller;
 

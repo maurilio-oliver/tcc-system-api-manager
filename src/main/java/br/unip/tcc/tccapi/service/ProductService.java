@@ -67,4 +67,8 @@ public class ProductService {
     public void findPopularProducts() {
        // this.productRepository.findPopularProducts();
     }
+
+    public List<Product> findProductByCategory(String category, Integer limit) {
+        return this.productRepository.findALlByCategory(category, limit);
+    }
 }

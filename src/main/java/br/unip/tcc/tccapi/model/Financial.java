@@ -6,14 +6,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
 public class Financial extends GenericJsonConverter<Financial> {
-    private String bankCode;
-    private String bankNumber;
-    private String digit;
-    private String bankKind;
+    private String cardNumber;
+    private String name;
+    private LocalDate dueDate;
+    private String cvv;
 
     @Override
     public String getTypeName(){

@@ -21,6 +21,7 @@ public class OrderService {
 
           return this.orderRepository.save(order);
     }
+
     public void cancelById(final Long id){
         Orders order = this.orderRepository.findById(id).get();
         order.setCancelledAt(LocalDateTime.now());

@@ -11,6 +11,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.type.descriptor.jdbc.SmallIntJdbcType;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -34,13 +35,18 @@ public class Product {
     private LocalDateTime disabledAt;
     private BigDecimal price;
     private Integer clicks;
-    private Integer sellers;
-    private String name;
     private String description;
+    private String name;
     private String imagePath;
     private BigDecimal quality;
+    private LocalDate releaseDate;
+    private String color;
+    private Integer size;
+    private String title;
+
     @Enumerated
     private ProductState state;
+
     @Convert(converter = CategoryAllocation.class)
     @Column(columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")

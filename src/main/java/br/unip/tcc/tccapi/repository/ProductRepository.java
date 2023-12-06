@@ -12,17 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-//    public Optional<Product> findProductBySellerId(final Long sellerId);
 
-//    public Optional<Product> findAllByCategory(CategoryAllocation category);
+    @Query(value = "select p from Product p where p.sellerId = ?1",nativeQuery = true)
+    Optional<List<Product>> findAllBySellerId(Long sellerId);
 
-    @Query(value = "",nativeQuery = true)
-    public Optional<List<Product>> findAllBySellerId(Long sellerId);
-
-//    @Query(value = "SELECT p FROM Product p ")
-//    public Optional<Product> findAllLatestBestSellers();
-//
-//    @Query(value = "SELECT p FROM Product p order by p.sellers limit 10")
-//    public Optional<List<Product>> findAllPopularProductsbByellers();
+    @Query(value = "select p from Product p where p.category -> 'category' = ?1 limit 10", nativeQuery = true)
+    List<Product> findALlByCategory(String category, Integer limit);
 
 }

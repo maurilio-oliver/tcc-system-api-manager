@@ -1,72 +1,68 @@
 package br.unip.tcc.tccapi.service.client;
 
+import br.unip.tcc.tccapi.model.Product;
+import br.unip.tcc.tccapi.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
-@RequestMapping
+@RequestMapping("/product/recommender")
 public class RecommenderService {
 
+    @Value("${br.unip.tcc.intelligence.service.host}")
+    private String inteligenceHost;
 
-    public void GetAnonymosRecommender(@RequestBody Map<String, Object> productsData) {
-        try {
-            // URL da API ou serviço que você deseja acessar
-            String apiUrl = "http://localhost:4652/product-engine/";
+    @Autowired
+    private ProductService productService;
 
-            // Cria uma URL a partir da String da URL
-            URL url = new URL(apiUrl);
+    private ObjectMapper objectMapper = configureMapper();
 
-            // Abre uma conexão HTTP
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            // Configura o método da requisição (GET)
-            connection.setRequestMethod("GET");
-
-            // Define um tempo limite de conexão (opcional)
-            connection.setConnectTimeout(5000);
-
-            // Lê a resposta da requisição
-            int responseCode = connection.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = reader.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                reader.close();
-
-                // Imprime a resposta
-                System.out.println("Resposta da requisição GET:");
-                System.out.println(response.toString());
-                ObjectMapper objectMapper = new ObjectMapper();
-                List<Map> test = objectMapper.readValue(response.toString(), List.class);
-                System.out.println(test);
-            } else {
-                System.out.println("A requisição GET falhou. Código de resposta: " + responseCode);
-            }
-
-            // Fecha a conexão
-            connection.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    private ObjectMapper configureMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.registerModule(new JavaTimeModule()).configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, true);
     }
 
-    public static void main(String[] args) {
-        new RecommenderService().GetAnonymosRecommender(null);
+
+    @PostMapping("/*")
+    public ResponseEntity GetAnonymosRecommender(@RequestBody List<Long> productsData) throws URISyntaxException, IOException, InterruptedException {
+        List<Product> products = new ArrayList<>();
+        productsData.forEach(id -> {
+            Product candidate = productService.findProductById(id);
+            if (Objects.nonNull(candidate))
+                products.add(candidate);
+        });
+        productService.findProductByCategory(products.get(products.size()-1).getCategory().getCategory(), 10).forEach(
+                product -> {
+                    products.add(product);
+                }
+        );
+
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(new URI(inteligenceHost + "test/1")).header("Content-Type", "application/json").PUT(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(products))).build();
+        var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        List<Product> recommender = (List<Product>) objectMapper.readValue(response.body(),List.class);
+        return ResponseEntity.ok(recommender);
     }
 }

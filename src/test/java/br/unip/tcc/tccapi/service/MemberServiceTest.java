@@ -4,6 +4,7 @@ import br.unip.tcc.tccapi.model.Financial;
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Personal;
 import br.unip.tcc.tccapi.model.Seller;
+import br.unip.tcc.tccapi.model.bussines.BussinesException;
 import br.unip.tcc.tccapi.repository.MemberRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class MemberServiceTest {
     private MemberRepository memberRepository;
 
     @Test
-    public void memberServiceTestBasicSave(){
+    public void memberServiceTestBasicSave() throws BussinesException {
         // create a new person.
         Personal personal = new Personal();
         personal.setMobilePhone("11958110688");
@@ -68,7 +69,7 @@ public class MemberServiceTest {
         Assertions.assertTrue(Objects.nonNull(updated.getId()));
     }
 
-    @Test void memberUpdateTest() {
+    @Test void memberUpdateTest() throws BussinesException {
         var member = new Member();
         var personal = new Personal();
         personal.setEmail("member.test@gmail.com.br");
@@ -77,7 +78,7 @@ public class MemberServiceTest {
         personal.setName("test");
         member.setPersonal(personal);
 
-       var updatedMember = this.memberService.save(member);
+       var updatedMember = this.memberService.updateMember(member);
 
        Assertions.assertTrue(Objects.nonNull(updatedMember.getUpdatedAt()));
        Assertions.assertTrue(Objects.nonNull(updatedMember.getCreatedAt()));
@@ -90,7 +91,7 @@ public class MemberServiceTest {
        Assertions.assertEquals(updatedMember.getUpdatedAt(), updated2.getUpdatedAt());
     }
 
-    @Test void memberFindByTermTest() {
+    @Test void memberFindByTermTest() throws BussinesException {
         Member member = new Member();
         Personal personal = new Personal();
         personal.setEmail("member.test@gmail.com.br");
@@ -98,7 +99,6 @@ public class MemberServiceTest {
         personal.setTaxId("49545803827");
         personal.setName("test");
         member.setPersonal(personal);
-        member.setTest(List.of(1,2,3));
 
         member = this.memberService.save(member);
         Member salvedMember =  this.memberService.findByEmailOrMobilePhone(personal.getEmail(), personal.getMobilePhone(), personal.getTaxId());
@@ -109,6 +109,12 @@ public class MemberServiceTest {
         Assertions.assertEquals(member.getPersonal().getTaxId(), personal.getTaxId());
 
     }
+
+    @Test
+    public void classeFunçãoFluxo() {
+
+    }
+
 
 
 
