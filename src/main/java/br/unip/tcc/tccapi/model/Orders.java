@@ -1,6 +1,7 @@
 package br.unip.tcc.tccapi.model;
 
 import br.unip.tcc.tccapi.view.GenericJsonConverter;
+import br.unip.tcc.tccapi.view.ListConverter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -46,6 +47,12 @@ public class Orders {
 
     @Convert (converter = OrderState.Convert.class)
     private OrderState state;
+
+
+    @Column(columnDefinition = "jsonb")
+    @ColumnTransformer(write = "?::jsonb")
+    @Convert(converter = ListConverter.class)
+    private List<Long> test;
 
 
 

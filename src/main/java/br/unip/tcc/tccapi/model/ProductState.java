@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter
-
 public enum ProductState  {
     SET_UP(0L, LocalDateTime.now()),
     ACTIVE(1L,LocalDateTime.now()),

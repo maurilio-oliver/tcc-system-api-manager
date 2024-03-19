@@ -16,7 +16,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "select p from Product p where p.sellerId = ?1",nativeQuery = true)
     Optional<List<Product>> findAllBySellerId(Long sellerId);
 
-    @Query(value = "select p from Product p where p.category -> 'category' = ?1 limit 10", nativeQuery = true)
-    List<Product> findALlByCategory(String category, Integer limit);
+    @Query(value = "select p from Product p where p.category  = ?1 limit 20", nativeQuery = true)
+    List<Product> findALlByCategory(Long category, Integer limit);
+
+    @Query(value = "select * from product p limit 10", nativeQuery = true)
+    List<Product> findAllPopularProducts();
 
 }

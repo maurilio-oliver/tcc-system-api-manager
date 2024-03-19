@@ -32,11 +32,15 @@ public class SellerController {
      */
     @PostMapping("/create-seller")
     public ResponseEntity<Member> createNewSeller(@RequestBody Member seller) {
-
       return ResponseEntity.ok(this.sellerService.save(seller));
     }
 
-
+    /**
+     * <h1>Find a seller by id</h1>
+     * @param sellerId
+     * @return a seller with the corresponding id or null
+     *
+     */
     @GetMapping("/find-by-id/{sellerId}")
     public Member findById(@PathVariable Long sellerId) {
         return sellerService.findById(sellerId, true);
@@ -55,9 +59,14 @@ public class SellerController {
             return ResponseEntity.ok("error !");
     }
 
-
+    /**
+     * <h1>Update seller information's</h1>
+     * @param seller
+     * @return response Entity http
+     *
+     */
     @PutMapping
-    public ResponseEntity<String> updateSellerinformations(@RequestBody final Member seller){
+    public ResponseEntity<String> updateSellerInformation(@RequestBody final Member seller){
         this.sellerService.save(seller);
         return ResponseEntity.ok("ok");
     }

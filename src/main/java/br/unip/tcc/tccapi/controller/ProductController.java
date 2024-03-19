@@ -5,6 +5,7 @@ import br.unip.tcc.tccapi.model.Orders;
 import br.unip.tcc.tccapi.model.Product;
 import br.unip.tcc.tccapi.repository.ProductRepository;
 import br.unip.tcc.tccapi.service.ProductService;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    // get product by product id
+    /** get product by product id */
     @GetMapping("/find-by-id/{productId}")
     public ResponseEntity findByProduct(@PathVariable final Long productId) {
         Product product = this.productService.findProductById(productId);
@@ -35,35 +36,36 @@ public class ProductController {
         return (ResponseEntity) ResponseEntity.ok(createdProduct);
     }
 
-    // delete product by id
+    /**
+     * update product information
+     * @param product
+     * @return product
+     */
+    @PutMapping("/update")
+    public ResponseEntity updateProductById( @NonNull Product product) {
+
+        Product productUpdated = this.productService.save(product);
+        return ResponseEntity.ok(product);
+    }
+
+    /**
+     * delete product by id
+     */
     @DeleteMapping("/delete-by-id/{productId}")
     public ResponseEntity deleteProductById(@PathVariable final Long productId) {
         this.productService.deleteProductById(productId);
         return ResponseEntity.ok("ok");
     }
-    // update product by id
-    @PutMapping("/update/{productId}")
-    public ResponseEntity updateByProductId(@PathVariable final Long productId, @RequestBody Orders orders) {
-        return null;
+
+    /**
+     *
+     * @return
+     */
+    @GetMapping("/find-popular-products")
+    public ResponseEntity getProductsRecommender() {
+
+            return ResponseEntity.ok(this.productService.findPopularProducts());
+
     }
 
-    @GetMapping
-    public List<Product> getProductsRecommender(
-            @RequestBody List<Long> productsNavigation
-    ) {
-        if (productsNavigation.isEmpty()) {
-            this.productService.findPopularProducts();
-        } else {
-
-        }
-        return null;
-    }
-
-    @GetMapping("tes")
-    public ResponseEntity test() {
-        Product product = new Product();
-        product.setCategory(new CategoryAllocation());
-        product.process();
-        return ResponseEntity.ok(product);
-    }
 }

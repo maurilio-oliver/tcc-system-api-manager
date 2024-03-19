@@ -4,6 +4,7 @@ import br.unip.tcc.tccapi.model.Financial;
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Personal;
 import br.unip.tcc.tccapi.model.Seller;
+import br.unip.tcc.tccapi.model.bussines.BussinesException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class SellerServiceTests {
     }
 
     @Test
-    public void saveWithResistrationStartedTest() {
+    public void saveWithResistrationStartedTest() throws BussinesException {
         Member member = new Member();
 
         Personal personal = new Personal();

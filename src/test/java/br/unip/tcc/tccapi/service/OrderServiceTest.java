@@ -5,6 +5,7 @@ import br.unip.tcc.tccapi.controller.SellerController;
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Orders;
 import br.unip.tcc.tccapi.model.Product;
+import br.unip.tcc.tccapi.model.bussines.BussinesException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +34,7 @@ public class OrderServiceTest {
     private ProductService productService;
 
     @Test
-    public void orderSaveTest() {
+    public void orderSaveTest() throws BussinesException {
         Orders order = new Orders(), savedOrder;
         Member seller = new Member(), member = new Member(), savedSeller, savedMember;
         Product product1 = new Product(), product2 = new Product();
@@ -57,7 +59,7 @@ public class OrderServiceTest {
 
 
     @Test
-    public void orderTotalValueTest() {
+    public void orderTotalValueTest() throws BussinesException {
         Orders order = new Orders(), savedOrder;
         Member seller = new Member(), member = new Member(), savedSeller, savedMember;
         Product product1 = new Product(), product2 = new Product();
@@ -83,6 +85,17 @@ public class OrderServiceTest {
         savedMemberOrder = orderService.findByMemberId(savedMember.getId());
 
         Assertions.assertEquals(savedMemberOrder.get(0).getTotal(), product1.getPrice().add(product2.getPrice()));
+    }
+
+    @Test
+    public void test() {
+        Orders orders = new Orders();
+        orders.setTest(new ArrayList<>());
+        orders.setSellerId(1L);
+        orders.setMemberId(2L);
+        orders.getTest().add(1L);
+        this.orderService.save(orders);
+        System.out.printf("test");
     }
 
 }

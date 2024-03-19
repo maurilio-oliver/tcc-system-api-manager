@@ -41,9 +41,7 @@ public class MemberServiceTest {
 
         // set financial data.
         Financial financial = new Financial();
-        financial.setBankNumber("0066");
-        financial.setBankCode("42809");
-        financial.setDigit("5");
+       
 
         // configure member test.
         Member member = new Member();
@@ -78,7 +76,7 @@ public class MemberServiceTest {
         personal.setName("test");
         member.setPersonal(personal);
 
-       var updatedMember = this.memberService.updateMember(member);
+       var updatedMember = this.memberService.update(member);
 
        Assertions.assertTrue(Objects.nonNull(updatedMember.getUpdatedAt()));
        Assertions.assertTrue(Objects.nonNull(updatedMember.getCreatedAt()));

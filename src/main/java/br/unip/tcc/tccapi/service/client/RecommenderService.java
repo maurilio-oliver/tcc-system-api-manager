@@ -52,7 +52,7 @@ public class RecommenderService {
             if (Objects.nonNull(candidate))
                 products.add(candidate);
         });
-        productService.findProductByCategory(products.get(products.size()-1).getCategory().getCategory(), 10).forEach(
+        productService.findProductByCategory(products.get(products.size()-1).getCategory(), 10).forEach(
                 product -> {
                     products.add(product);
                 }

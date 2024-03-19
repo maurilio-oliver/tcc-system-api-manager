@@ -42,7 +42,7 @@ public class ProductService {
     public Product save(Product product){
         // if prince and name and image path not null
         if (Objects.nonNull(product.getPrice())
-                && Objects.nonNull(product.getName())
+                && Objects.nonNull(product.getTitle())
                 && Objects.nonNull(product.getImagePath())) {
             // set created at as now
             product.setCreatedAt(LocalDateTime.now());
@@ -64,11 +64,11 @@ public class ProductService {
         return "${br.unip.tcc.tccapi.model.member.id.notfound}";
     }
 
-    public void findPopularProducts() {
-       // this.productRepository.findPopularProducts();
+    public List<Product> findPopularProducts() {
+        return this.productRepository.findAllPopularProducts();
     }
 
-    public List<Product> findProductByCategory(String category, Integer limit) {
+    public List<Product> findProductByCategory(Long category, Integer limit) {
         return this.productRepository.findALlByCategory(category, limit);
     }
 }

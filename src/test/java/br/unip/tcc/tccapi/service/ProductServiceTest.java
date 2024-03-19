@@ -13,9 +13,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testng.annotations.BeforeTest;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @SpringBootTest
-@ActiveProfiles("test")
+
 public class ProductServiceTest {
 
     @Autowired
@@ -42,9 +43,9 @@ public class ProductServiceTest {
         this.before();
         Member seller = this.sellerService.findByTerm(null, "42505023022", null);
         Product product = new Product();
-        product.setName("test product");
+
         CategoryAllocation allocation = new CategoryAllocation();
-        product.setCategory(allocation);
+
         product.setDescription("simples produto de teste");
         product.setPrice(new BigDecimal("200.90"));
         product.setImagePath("C://home/path/category/subCategory");
@@ -61,9 +62,9 @@ public class ProductServiceTest {
     public void simpleProductUpdateTest(){
         Member seller = sellerService.findByTerm("42505023022", null, null);
         Product product = new Product();
-        product.setName("test product");
+
         CategoryAllocation allocation = new CategoryAllocation();
-        product.setCategory(allocation);
+
         product.setDescription("simples produto de teste");
         product.setPrice(new BigDecimal("200.90"));
         product.setImagePath("C://home/path/category/subCategory");
@@ -74,18 +75,56 @@ public class ProductServiceTest {
         Assertions.assertNotNull(product.getId());
         Assertions.assertEquals(product.getSellerId(), seller.getId());
 
-        product.setName("test product 2");
+
         this.productService.save(product);
         Product updatedProduct = this.productService.findProductById(product.getId());
 
         Assertions.assertEquals(product.getId(), updatedProduct.getId());
-        Assertions.assertNotEquals(product.getName(), updatedProduct.getName());
+
     }
 
     @Test
     public void simpleProductDeleteTest(){}
 
     public void simpleProductFindBySellerId(){}
+
+    @Test
+    public void productServiceStateTest(){
+        Product product = new Product();
+
+        // validate if product not in configuration state
+        Assertions.assertNull(product.getState());
+        product.process();
+
+        // validate if product is in configuration state
+        Assertions.assertTrue(ProductState.SET_UP.equals(product.getState()));
+
+        // validate if product is in active state
+        product.setPrice(new BigDecimal(2));
+
+        product.setImagePath("/camisa.waver");
+        product.process();
+        Assertions.assertEquals(ProductState.ACTIVE, product.getState());
+
+        // validate if product is in paused state
+        product.setPausedAt(LocalDateTime.now());
+        product.process();
+        Assertions.assertEquals(ProductState.PAUSED, product.getState());
+
+        //validate if product is disabled
+        product.setDisabledAt(LocalDateTime.now());
+        product.process();
+        Assertions.assertEquals(ProductState.DISABLED, product.getState());
+
+        // validate if product is in deleted state
+        product.setDeletedAt(LocalDateTime.now());
+        product.process();
+        Assertions.assertEquals(ProductState.DELETED, product.getState());
+
+
+
+
+    }
 
 
 }

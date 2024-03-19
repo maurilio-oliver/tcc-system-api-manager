@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode(callSuper = false)
 public class Seller extends GenericJsonConverter<Seller> {
+    private FinancialSeller financialSeller;
     private LocalDateTime initializedAt;
     public static final String typeName = "br.unip.tcc.tccapi.model.Seller";
 

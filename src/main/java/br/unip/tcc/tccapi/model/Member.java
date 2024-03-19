@@ -1,24 +1,17 @@
 package br.unip.tcc.tccapi.model;
 
-import br.unip.tcc.tccapi.view.GenericJsonConverter;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CollectionType;
+
 import org.hibernate.annotations.ColumnTransformer;
 
-import org.hibernate.annotations.Type;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.cglib.core.Local;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Objects;
+
 
 @Getter
 @Setter
@@ -45,7 +38,7 @@ public class Member /*implements UserDetails*/ {
 
     @Column(columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
-    @Convert(converter = Financial.class)
+    @Convert(converter = Residential.class)
     private Residential residential;
 
     @Column(columnDefinition = "jsonb")
@@ -90,4 +83,13 @@ public class Member /*implements UserDetails*/ {
     public boolean isEnabled() {
         return true;
     }*/
+
+    public boolean hasPersistir(){
+        return Objects.nonNull(this.getPersonal()) &&
+                (Objects.nonNull(this.getPersonal().getEmail())
+                        && Objects.nonNull(this.getPersonal().getTaxId())
+                        && Objects.nonNull(this.getPersonal().getMobilePhone()));
+    }
+
+
 }
