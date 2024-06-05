@@ -8,11 +8,12 @@ import jakarta.persistence.Converter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Converter
-public class ListConverter<T> implements AttributeConverter<List<T>, String> {
+public class ListConverter<T> implements AttributeConverter<Collection<T>, String> {
 
     private static final String DELIMITER = ",";
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -24,7 +25,7 @@ public class ListConverter<T> implements AttributeConverter<List<T>, String> {
     }
 
     @Override
-    public String convertToDatabaseColumn(List<T> attribute) {
+    public String convertToDatabaseColumn(Collection<T> attribute) {
         if (attribute == null || attribute.isEmpty()) {
             return null;
         }
@@ -36,12 +37,12 @@ public class ListConverter<T> implements AttributeConverter<List<T>, String> {
     }
 
     @Override
-    public List<T> convertToEntityAttribute(String dbData) {
+    public Collection<T> convertToEntityAttribute(String dbData) {
         if (dbData == null || dbData.isEmpty()) {
             return null;
         }
         try {
-            List<T> array = objectMapper.readValue(dbData, ArrayList.class);
+            Collection<T> array = objectMapper.readValue(dbData, Collection.class);
             return array;
         } catch (IOException e) {
             throw new RuntimeException("Error converting JSON to list", e);

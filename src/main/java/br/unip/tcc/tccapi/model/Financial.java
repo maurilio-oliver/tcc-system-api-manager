@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class Financial extends GenericJsonConverter<Financial> {
     private String cardNumber;
     private String name;
-    private LocalDate dueDate;
+    private String dueDate;
     private String cvv;
 
     @Override

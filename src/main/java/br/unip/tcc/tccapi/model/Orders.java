@@ -32,6 +32,7 @@ public class Orders {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime paidOffAt;
+    private LocalDateTime paymentRequested;
     private LocalDateTime requestedAt;
     private LocalDateTime confirmationPending;
     private LocalDateTime acceptedAt;
@@ -43,16 +44,43 @@ public class Orders {
     @Column(columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
     @Convert(converter = Items.class)
-    private Items items;
+    private Items items = new Items();
 
     @Convert (converter = OrderState.Convert.class)
     private OrderState state;
 
+    public Orders processState() {
 
-    @Column(columnDefinition = "jsonb")
-    @ColumnTransformer(write = "?::jsonb")
-    @Convert(converter = ListConverter.class)
-    private List<Long> test;
+        if (Objects.nonNull(cancelledAt)){
+            this.setState(OrderState.CANCELED);
+        }
+        else if (Objects.nonNull(deliveredAt)) {
+            this.setState(OrderState.DELIVERED);
+        }
+        else if (Objects.nonNull(deliveredAtConfirmed)) {
+            this.setState(OrderState.DELIVERD_CONFIRMED);
+        }
+        else if (Objects.nonNull(sendAt)) {
+            this.setState(OrderState.SENDED);
+        }
+        else if (Objects.nonNull(acceptedAt)) {
+            this.setState(OrderState.ACCEPTED);
+        }
+        else if (Objects.nonNull(paidOffAt)) {
+            this.setState(OrderState.PAID);
+        }
+        else if (Objects.nonNull(paymentRequested)) {
+            this.setState(OrderState.PENDING_PAYMENT);
+        }
+
+        else if (Objects.nonNull(requestedAt)) {
+            this.setState(OrderState.REQUESTED);
+        }
+        else {
+            this.setState(OrderState.ERROR);
+        }
+        return this;
+    }
 
 
 

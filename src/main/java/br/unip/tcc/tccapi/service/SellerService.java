@@ -2,8 +2,11 @@ package br.unip.tcc.tccapi.service;
 
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Seller;
+import br.unip.tcc.tccapi.model.user.User;
 import br.unip.tcc.tccapi.repository.MemberRepository;
+import br.unip.tcc.tccapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,8 +22,11 @@ public class SellerService {
 
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-
+    @Autowired
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     /**
      *  <h1>Save (Seller)</h1>
      *  saves and updates member (seller) data
@@ -43,7 +49,19 @@ public class SellerService {
                 member.getCreatedAt() == null ?
                         LocalDateTime.now() : member.getCreatedAt());
         // Save data
-        return this.memberRepository.save(member);
+        member.setUsername(member.getPersonal().getEmail());
+        member = this.memberRepository.save(member);
+
+        if (member.getId() != null && member.getPersonal() != null && (member.getPersonal().getEmail() != null)) {
+            User user = new User();
+            user.setId(member.getId());
+            user.setUsername(member.getPersonal().getEmail());
+            user.setPassword(encoder.encode(member.getPassword()));
+            user.setRole("ROLE_SELLER");
+            this.userRepository.save(user);
+        }
+
+        return member;
     }
 
     /**

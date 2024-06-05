@@ -44,11 +44,6 @@ public class Product {
 
     private Long category;
 
-//    @Convert(converter = CategoryAllocation.class)
-//    @Column(columnDefinition = "jsonb")
-//    @ColumnTransformer(write = "?::jsonb")
-//    private CategoryAllocation category;
-
     public boolean inConfiguration(){
 
         return Objects.isNull(price) && Objects.isNull(title) && Objects.isNull(description) && Objects.isNull(imagePath);

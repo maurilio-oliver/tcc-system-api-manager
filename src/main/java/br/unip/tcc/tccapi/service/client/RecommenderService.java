@@ -46,7 +46,9 @@ public class RecommenderService {
 
     @PostMapping("/*")
     public ResponseEntity GetAnonymosRecommender(@RequestBody List<Long> productsData) throws URISyntaxException, IOException, InterruptedException {
-        List<Product> products = new ArrayList<>();
+
+            List<Product> products = new ArrayList<>();
+
         productsData.forEach(id -> {
             Product candidate = productService.findProductById(id);
             if (Objects.nonNull(candidate))

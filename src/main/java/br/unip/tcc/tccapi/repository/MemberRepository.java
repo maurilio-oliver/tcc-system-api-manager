@@ -10,14 +10,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Repository
+@EnableJpaRepositories
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
 
-    @Query(value = "select * from Member u where cast(u.personal as JSONB) ->> 'email'  = ?1 or cast(u.personal as JSONB) ->> 'taxId' = ?2 or cast(u.personal as JSONB) ->> 'phoneNumber' =  ?3 limit 1", nativeQuery = true)
+    @Query(value = "select * from Member u where cast(personal as JSONB) ->> 'email'  = ?1 or cast(u.personal as JSONB) ->> 'taxId' = ?2 or cast(u.personal as JSONB) ->> 'phoneNumber' =  ?3 limit 1", nativeQuery = true)
     Member findByTerms(String email, String taxId, String phoneNumber);
 
-    @Query(value = "select * from Member u where u.email = ?1", nativeQuery = true)
+    @Query(value = "select * from Member u where (personal ->> 'email') = ?1", nativeQuery = true)
     Member findByEmail(String email);
 
 
+   Member findByUsername(String username);
 }

@@ -90,10 +90,10 @@ public class OrderServiceTest {
     @Test
     public void test() {
         Orders orders = new Orders();
-        orders.setTest(new ArrayList<>());
+
         orders.setSellerId(1L);
         orders.setMemberId(2L);
-        orders.getTest().add(1L);
+
         this.orderService.save(orders);
         System.out.printf("test");
     }

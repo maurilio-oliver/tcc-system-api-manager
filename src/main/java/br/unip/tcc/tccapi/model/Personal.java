@@ -31,4 +31,9 @@ public class Personal extends GenericJsonConverter<Personal> {
     public String getTypeName() {
         return Personal.class.getTypeName();
     }
+
+    public static void main(String[] args) {
+        var personal = new Personal();
+
+    }
 }

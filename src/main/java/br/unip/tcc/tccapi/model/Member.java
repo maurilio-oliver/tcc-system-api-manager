@@ -1,15 +1,25 @@
 package br.unip.tcc.tccapi.model;
 
 
+import br.unip.tcc.tccapi.view.ListConverter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import net.minidev.json.annotate.JsonIgnore;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.hibernate.annotations.ColumnTransformer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -17,7 +27,7 @@ import java.util.Objects;
 @Setter
 @EqualsAndHashCode
 @Entity
-public class Member /*implements UserDetails*/ {
+public class Member{
     @Id
     @GeneratedValue
     private Long id;
@@ -25,6 +35,8 @@ public class Member /*implements UserDetails*/ {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private String password;
+
+    private String username;
 
     @Column(columnDefinition = "jsonb")
     @ColumnTransformer(write = "?::jsonb")
@@ -46,50 +58,28 @@ public class Member /*implements UserDetails*/ {
     @Convert(converter = Seller.class)
     private Seller seller;
 
-
     public Personal getPersonal() {
         return personal == null ? new Personal() : personal;
     }
 
-   /* @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (Objects.nonNull(this.seller) && Objects.nonNull(this.seller.getInitializedAt())){
-          return List.of(new SimpleGrantedAuthority("ROLE_USER_SELLER"));
-        }
-        return List.of(new SimpleGrantedAuthority("ROLE_USER_COMMON"));
-    }
-
-    @Override
-    public String getUsername() {
-        return this.getPersonal().getEmail();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }*/
-
-    public boolean hasPersistir(){
+    public boolean hasPersist(){
         return Objects.nonNull(this.getPersonal()) &&
                 (Objects.nonNull(this.getPersonal().getEmail())
                         && Objects.nonNull(this.getPersonal().getTaxId())
-                        && Objects.nonNull(this.getPersonal().getMobilePhone()));
+                        && Objects.nonNull(this.getPersonal().getMobilePhone())) && this.isValid();
     }
+
+    @JsonIgnore
+    public boolean isValid() {
+        EmailValidator validator = EmailValidator.getInstance();
+        boolean isValid = false;
+        if (Objects.nonNull(this.getPersonal()) && Objects.nonNull(this.getPersonal().getEmail())) {
+            isValid = validator.isValid(this.getPersonal().getEmail());
+        }
+        return isValid;
+    }
+
+
 
 
 }

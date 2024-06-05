@@ -1,9 +1,11 @@
 package br.unip.tcc.tccapi.controller;
 
 import br.unip.tcc.tccapi.model.Orders;
+import br.unip.tcc.tccapi.model.Product;
 import br.unip.tcc.tccapi.model.bussines.BussinesException;
 import br.unip.tcc.tccapi.repository.OrderRepository;
 import br.unip.tcc.tccapi.service.OrderService;
+import br.unip.tcc.tccapi.service.ProductService;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +25,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ProductService productService;
 
     /**
      * <h1>Find orders by member id</h1>
@@ -58,8 +64,20 @@ public class OrderController {
      * @param order
      */
     @PostMapping("/create-new-order")
-    public void requestNewOrder(@RequestBody Orders order) {
-        this.orderService.save(order);
+    public void requestNewOrder(@RequestParam Long memberId, @RequestParam Long sellerId ,@RequestBody List<Long> productList) {
+        Orders newOrder = new Orders();
+        List<Product> products = new ArrayList<>();
+        productList.forEach(id -> {
+            Product product = this.productService.findProductById(id);
+            if (Objects.nonNull(product)) {
+                products.add(product);
+            }
+        });
+        newOrder.getItems().setProducts(products);
+        newOrder.setMemberId(memberId);
+        newOrder.setSellerId(sellerId);
+        newOrder.setRequestedAt(LocalDateTime.now());
+        this.orderService.save(newOrder);
     }
 
     /**

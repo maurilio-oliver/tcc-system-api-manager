@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Map;
 
-public class BussinesException extends Exception {
+public class BussinesException extends RuntimeException {
 
     public BussinesException(String message) {
         super(message);

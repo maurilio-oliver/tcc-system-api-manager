@@ -33,7 +33,7 @@ public class ProductController {
     public ResponseEntity createNewProduct(@RequestBody Product product) {
             Product createdProduct = this.productService.save(product);
 
-        return (ResponseEntity) ResponseEntity.ok(createdProduct);
+        return ResponseEntity.ok(createdProduct);
     }
 
     /**

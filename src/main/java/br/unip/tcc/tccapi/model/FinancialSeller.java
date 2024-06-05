@@ -13,7 +13,7 @@ public class FinancialSeller extends GenericJsonConverter<FinancialSeller> {
 
     @Override
     public String getTypeName(){
-        return Financial.class.getTypeName();
+        return FinancialSeller.class.getTypeName();
     }
 
 }

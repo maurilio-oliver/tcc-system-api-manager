@@ -42,8 +42,8 @@ public class SellerController {
      *
      */
     @GetMapping("/find-by-id/{sellerId}")
-    public Member findById(@PathVariable Long sellerId) {
-        return sellerService.findById(sellerId, true);
+    public ResponseEntity findById(@PathVariable Long sellerId) {
+        return ResponseEntity.ok(sellerService.findById(sellerId, true));
     }
 
     @GetMapping("find-by-term")

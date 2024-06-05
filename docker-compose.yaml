@@ -9,23 +9,3 @@ services:
     ports:
       - "8180:5432"
     container_name: tcc_docker_services
-
-  activemq:
-    image: vromero/activemq-artemis:latest-alpine
-    container_name: activemq
-    environment:
-      ARTEMIS_USERNAME: user-amq
-      ARTEMIS_PASSWORD: password-amq
-    ports:
-      - "8161:8161"
-      - "61616:61616"
-  grafana:
-    image: grafana/grafana:9.3.6
-    ports:
-      - 3000:3000
-    restart: unless-stopped
-    volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - grafana-data:/var/lib/grafana
-volumes:
-  grafana-data:
