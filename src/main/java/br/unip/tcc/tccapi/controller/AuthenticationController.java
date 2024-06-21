@@ -2,11 +2,9 @@ package br.unip.tcc.tccapi.controller;
 
 
 
-import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Token;
 import br.unip.tcc.tccapi.model.User;
-import br.unip.tcc.tccapi.model.bussines.BussinesException;
-import com.auth0.jwt.algorithms.Algorithm;
+import br.unip.tcc.tccapi.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,7 +1,6 @@
-package br.unip.tcc.tccapi.controller;
+package br.unip.tcc.tccapi.service;
 
 
-import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.User;
 
 import com.auth0.jwt.JWT;
