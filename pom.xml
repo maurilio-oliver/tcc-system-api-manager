@@ -17,24 +17,11 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
-<!--         https://mvnrepository.com/artifact/com.auth0/java-jwt-->
-                <dependency>
-                    <groupId>com.auth0</groupId>
-                    <artifactId>java-jwt</artifactId>
-                    <version>4.4.0</version>
-                </dependency>
-
-
-        <!-- Outras dependências -->
+        <!-- spring -->
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.14.3</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-            </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -52,7 +39,18 @@
             <artifactId>spring-jms</artifactId>
             <optional>true</optional>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- security -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <!-- persistence -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -64,6 +62,12 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.14.3</version>
+        </dependency>
+        <!-- formatter -->
+        <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
             <version>2.2.2</version>
@@ -72,11 +76,6 @@
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>

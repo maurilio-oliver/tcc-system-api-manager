@@ -4,7 +4,7 @@ import br.unip.tcc.tccapi.controller.BussinesExceptionAdvance;
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Personal;
 import br.unip.tcc.tccapi.model.bussines.BussinesException;
-import br.unip.tcc.tccapi.model.user.User;
+import br.unip.tcc.tccapi.model.User;
 import br.unip.tcc.tccapi.repository.MemberRepository;
 import br.unip.tcc.tccapi.repository.UserRepository;
 import com.auth0.jwt.algorithms.Algorithm;

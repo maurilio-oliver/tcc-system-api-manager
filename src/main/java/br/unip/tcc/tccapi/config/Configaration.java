@@ -12,8 +12,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -21,6 +24,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 
 public class Configaration {
+
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -31,6 +35,8 @@ public class Configaration {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
+
 
 
 

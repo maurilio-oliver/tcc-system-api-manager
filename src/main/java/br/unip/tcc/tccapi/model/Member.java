@@ -27,7 +27,7 @@ import java.util.Objects;
 @Setter
 @EqualsAndHashCode
 @Entity
-public class Member{
+public class Member {
     @Id
     @GeneratedValue
     private Long id;
@@ -62,7 +62,7 @@ public class Member{
         return personal == null ? new Personal() : personal;
     }
 
-    public boolean hasPersist(){
+    public boolean hasPersist() {
         return Objects.nonNull(this.getPersonal()) &&
                 (Objects.nonNull(this.getPersonal().getEmail())
                         && Objects.nonNull(this.getPersonal().getTaxId())

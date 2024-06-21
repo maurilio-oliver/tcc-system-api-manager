@@ -2,7 +2,7 @@ package br.unip.tcc.tccapi.service;
 
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Seller;
-import br.unip.tcc.tccapi.model.user.User;
+import br.unip.tcc.tccapi.model.User;
 import br.unip.tcc.tccapi.repository.MemberRepository;
 import br.unip.tcc.tccapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ public class SellerService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    //@Autowired
+   // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     /**
      *  <h1>Save (Seller)</h1>
      *  saves and updates member (seller) data
@@ -56,7 +56,7 @@ public class SellerService {
             User user = new User();
             user.setId(member.getId());
             user.setUsername(member.getPersonal().getEmail());
-            user.setPassword(encoder.encode(member.getPassword()));
+            //user.setPassword(encoder.encode(member.getPassword()));
             user.setRole("ROLE_SELLER");
             this.userRepository.save(user);
         }

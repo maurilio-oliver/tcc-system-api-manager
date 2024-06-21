@@ -7,5 +7,5 @@ services:
         POSTGRES_USER: developer
         POSTGRES_PASSWORD: developer
     ports:
-      - "8180:5432"
+      - "8081:5432"
     container_name: tcc_docker_services

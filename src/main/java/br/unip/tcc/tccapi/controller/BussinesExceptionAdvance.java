@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -16,13 +17,13 @@ public class BussinesExceptionAdvance {
 
     @ExceptionHandler(BussinesException.class)
     public ResponseEntity<Object> handleMinhaExcecaoPersonalizada(BussinesException ex, WebRequest request) {
-        Map<String, Object> message = Map.of("class", ex.getStackTrace()[0].getClassName(), "methodName", ex.getStackTrace()[0].getMethodName(), "message", ex.getMessage());
+        Map<String, Object> message = Map.of("class", ex.getStackTrace()[0].getClassName(), "methodName", ex.getStackTrace()[0].getMethodName(), "message", ex.getMessage(), "date", LocalDateTime.now());
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalExcecaoPersonalizada(Exception ex, WebRequest request) {
-        Map<String, Object> message = Map.of("class", ex.getStackTrace()[0].getClassName(), "methodName", ex.getStackTrace()[0].getMethodName(), "message", ex.getMessage());
+        Map<String, Object> message = Map.of("class", ex.getStackTrace()[0].getClassName(), "methodName", ex.getStackTrace()[0].getMethodName(), "message", ex.getMessage(), "date", LocalDateTime.now());
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

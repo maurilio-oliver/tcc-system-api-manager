@@ -41,7 +41,11 @@ public class MemberController {
             return ResponseEntity.status(201).body(this.memberService.save(member));
         } else {
 
-            return ResponseEntity.status(500).body(new BussinesException("erro ao crea"));
+                member.setPersonal(new Personal());
+                member.setResidential(new Residential());
+                member.setFinancial(new Financial());
+
+            return ResponseEntity.status(500).body(member);
         }
     }
 

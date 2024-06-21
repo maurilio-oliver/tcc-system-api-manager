@@ -4,7 +4,8 @@ package br.unip.tcc.tccapi.controller;
 
 import br.unip.tcc.tccapi.model.Member;
 import br.unip.tcc.tccapi.model.Token;
-import br.unip.tcc.tccapi.model.user.User;
+import br.unip.tcc.tccapi.model.User;
+import br.unip.tcc.tccapi.model.bussines.BussinesException;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,29 +21,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 
+
 @Controller
 @RequestMapping("/auth/")
 public class AuthenticationController {
-
-
 
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @PostMapping("v1")
-    public ResponseEntity<Object> login(@RequestBody @Validated final User user) {
+    public ResponseEntity<Object> login(@RequestBody @Validated User user) {
+
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 
+
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
-
-
-
 
         return ResponseEntity.ok(Map.of("token", new Token(tokenService.generateToken((User) authentication.getPrincipal())),
                 "user", (User) authentication.getPrincipal()));
